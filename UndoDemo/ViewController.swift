@@ -16,17 +16,17 @@ class ViewController: UIViewController {
         
         let container = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 44))
         
-        var config = UIButton.Configuration.borderedTinted()
-        config.title = "Strikethrough"
+        var config = UIButton.Configuration.bordered()
+        config.image = UIImage(systemName: "strikethrough")
         let strikeButton = UIButton(configuration: config)
         strikeButton.addTarget(self, action: #selector(toggleStrikethrough), for: .touchUpInside)
         container.addSubview(strikeButton)
-        strikeButton.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
+        strikeButton.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 20).isActive = true
         strikeButton.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
         strikeButton.translatesAutoresizingMaskIntoConstraints = false
         
-        config = UIButton.Configuration.borderedTinted()
-        config.title = "Emoji"
+        config = UIButton.Configuration.bordered()
+        config.title = "😀"
         let emojiButton = UIButton(configuration: config)
         emojiButton.addTarget(self, action: #selector(addEmoji), for: .touchUpInside)
         container.addSubview(emojiButton)
@@ -34,7 +34,35 @@ class ViewController: UIViewController {
         emojiButton.leftAnchor.constraint(equalTo: strikeButton.rightAnchor, constant: 16).isActive = true
         emojiButton.translatesAutoresizingMaskIntoConstraints = false
         
+        config = UIButton.Configuration.bordered()
+        config.image = UIImage(systemName: "arrow.uturn.backward")
+        let undoButton = UIButton(configuration: config)
+        container.addSubview(undoButton)
+        undoButton.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        undoButton.leftAnchor.constraint(equalTo: emojiButton.rightAnchor, constant: 16).isActive = true
+        undoButton.addTarget(self, action: #selector(onUndo), for: .touchUpInside)
+        undoButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        config = UIButton.Configuration.bordered()
+        config.image = UIImage(systemName: "arrow.uturn.forward")
+        let redoButton = UIButton(configuration: config)
+        container.addSubview(redoButton)
+        redoButton.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        redoButton.leftAnchor.constraint(equalTo: undoButton.rightAnchor, constant: 16).isActive = true
+        redoButton.addTarget(self, action: #selector(onUndo), for: .touchUpInside)
+        redoButton.translatesAutoresizingMaskIntoConstraints = false
+        
         self.textView.inputAccessoryView = container
+    }
+    
+    @objc func onUndo(_ sender: Any?) {
+        guard self.textView.undoManager?.canUndo == true else { print("Can't undo!"); return }
+        self.textView.undoManager?.undo()
+    }
+    
+    @objc func onRedo(_ sender: Any?) {
+        guard self.textView.undoManager?.canRedo == true else { print("Can't redo!"); return }
+        self.textView.undoManager?.redo()
     }
     
     @objc func toggleStrikethrough(_ sender: Any?) {
