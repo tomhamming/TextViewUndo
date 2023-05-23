@@ -1,0 +1,13 @@
+.DS_Store
+*.swp
+*~
+
+*.mode1v3
+*.pbxuser
+xcuserdata
+.idea
+*.xcodeproj/xcshareddata/xcdebugger/Breakpoints.xcbkptlist
+*.pbxuser
+*.mode1v3
+*.xccheckout
+xcshareddata/xcdebugger
